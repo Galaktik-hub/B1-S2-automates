@@ -11,15 +11,47 @@ TELLE Alexis | BUT INF 1 2023-2024
 ##########################################
 #           IMPORTING SECTION            #
 ##########################################
+
 import decorators as dec
+import automates
+
 ##########################################
 
 @dec.timer
+def deterministe(auto: dict) -> bool :
+    for etat in auto["etats"]:
+        dejaVu = set()  # Pour les états qui auraient plusieurs transitions avec une même lettre
+        for transition in auto["transitions"]: #TODO: A optimiser avec un filter
+            if transition[0] == etat:
+                if transition[1] not in dejaVu:
+                    dejaVu.add(transition[1])
+                else:
+                    return False
+    return True
 
+
+@dec.timer
+def determinise(auto: dict) -> dict:
+    return dict()
+
+
+@dec.timer
+def renommage(auto: dict) -> dict:
+    etats = list()
+    transitions = list()
+    i = list()
+    f = list()
+    
+    return automates.defauto(auto["alphabet"], etats, transitions, i, f)
 
 
 def main(): # Cellule de test
-    pass
+    auto0 ={"alphabet":['a','b'],"etats": [0,1,2,3], "transitions":[[0,'a',1],[1,'a',1],[1,'b',2],[2,'a',3]], "I":[0],"F":[3]}
+    auto1 ={"alphabet":['a','b'],"etats": [0,1], "transitions":[[0,'a',0],[0,'b',1],[1,'b',1],[1,'a',1]], "I":[0],"F":[1]}
+    auto2={"alphabet":['a','b'],"etats": [0,1], "transitions":[[0,'a',0],[0,'a',1],[1,'b',1],[1,'a',1]], "I":[0],"F":[1]}
+
+    deterministe(auto0)
+    deterministe(auto2)
 
 
 if __name__ == "__main__":

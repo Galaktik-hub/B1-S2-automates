@@ -1,7 +1,15 @@
+#!/usr/bin/python3
+'''
+Bunch of useful decorators made by Alexis TELLE
+'''
+##########################################
+#           IMPORTING SECTION            #
+##########################################
+
 import functools
 import time
 
-# A bunch of useful decorators
+##########################################
 
 def timer(func):
     """Print the runtime of the decorated function with the function signature and return value"""

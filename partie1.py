@@ -11,8 +11,8 @@ TELLE Alexis | BUT INF 1 2023-2024
 ##########################################
 #           IMPORTING SECTION            #
 ##########################################
-import decorators as dec
 
+import decorators as dec
 
 ##########################################
 
