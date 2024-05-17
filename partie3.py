@@ -17,6 +17,7 @@ from partie2 import determinise, renommage
 
 ##########################################
 
+
 @dec.timer
 def complet(auto: dict) -> bool:
     for etat in auto["etats"]:

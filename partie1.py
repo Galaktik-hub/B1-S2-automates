@@ -89,44 +89,45 @@ def defauto() -> dict:  # 1.3.1
     """Lit un automate petit à petit en fonction des inpute de l'utilisateur."""
     nouvel_auto: dict = {
         "alphabet": [],
-        "etats:": [],
+        "etats": [],
         "transitions": [],
         "I": [],
         "F": []
     }
     alphabet = input("Veuillez entrer une à une les lettres de l'alphabet de l'automate. Entrez 'fin' pour "
-                     "terminer la lecture.")
+                     "terminer la lecture. ")
     while alphabet != 'fin':
         nouvel_auto["alphabet"].append(alphabet)
-        alphabet = input("Voulez-vous rentrez une autre lettre ? Entrez 'fin' pour terminer la lecture.")
+        alphabet = input("Voulez-vous rentrez une autre lettre ? Entrez 'fin' pour terminer la lecture. ")
 
-    etat = input("Veuillez entrer un à un les états de l'automate. Entrez 'fin' pour terminer la lecture.")
+    etat = input("Veuillez entrer un à un les états de l'automate. Entrez 'fin' pour terminer la lecture. ")
     while etat != 'fin':
         nouvel_auto["etats"].append(int(etat))
-        etat = input("Voulez-vous rentrez un autre état ? Entrez 'fin' pour terminer la lecture.")
+        etat = input("Voulez-vous rentrez un autre état ? Entrez 'fin' pour terminer la lecture. ")
 
     transition = input("Veuillez entrer une à une les transitions de l'automate sous la forme 'etat1 lettre etat2'."
-                       " Entrez 'fin' pour terminer la lecture.")
+                       " Entrez 'fin' pour terminer la lecture. ")
     while transition != 'fin':
-        transition = transition.split(" ")
-        if transition[0] in nouvel_auto["etats"] and transition[1] in nouvel_auto["alphabet"] and transition[2] in \
-                nouvel_auto["etats"]:
+        transition = transition.split()
+        if int(transition[0]) in nouvel_auto["etats"] and transition[1] in nouvel_auto["alphabet"] and \
+                int(transition[2]) in nouvel_auto["etats"]:
             nouvel_auto["transitions"].append([int(transition[0]), transition[1], int(transition[2])])
-            transition = input("Voulez-vous rentrez une autre transition ? Entrez 'fin' pour terminer la lecture.")
+            transition = input("Voulez-vous rentrez une autre transition ? Entrez 'fin' pour terminer la lecture. ")
         else:
             print("La transition entrée n'est pas valide.")
-            transition = input("Veuillez entrer une autre transition. Entrez 'fin' pour terminer la lecture.")
+            transition = input("Veuillez entrer une autre transition. Entrez 'fin' pour terminer la lecture. ")
 
     etat_init = input("Veuillez entrer un à un les états initiaux de l'automate. Entrez 'fin' "
-                      "pour terminer la lecture.")
+                      "pour terminer la lecture. ")
     while etat_init != 'fin':
         nouvel_auto["I"].append(int(etat_init))
-        etat_init = input("Voulez-vous rentrez un autre état initial ? Entrez 'fin' pour terminer la lecture.")
+        etat_init = input("Voulez-vous rentrez un autre état initial ? Entrez 'fin' pour terminer la lecture. ")
 
-    etat_final = input("Veuillez entrer un à un les états finaux de l'automate. Entrez 'fin' pour terminer la lecture.")
+    etat_final = input("Veuillez entrer un à un les états finaux de l'automate. Entrez 'fin' pour terminer "
+                       "la lecture. ")
     while etat_final != 'fin':
         nouvel_auto["F"].append(int(etat_final))
-        etat_final = input("Voulez-vous rentrez un autre état final ? Entrez 'fin' pour terminer la lecture.")
+        etat_final = input("Voulez-vous rentrez un autre état final ? Entrez 'fin' pour terminer la lecture. ")
 
     return nouvel_auto
 

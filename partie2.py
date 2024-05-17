@@ -16,6 +16,7 @@ import decorators as dec
 
 ##########################################
 
+
 @dec.timer
 def deterministe(auto: dict) -> bool:
     if len(auto["I"]) != 1:

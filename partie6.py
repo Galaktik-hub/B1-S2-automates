@@ -103,7 +103,7 @@ def minimise(auto: dict) -> dict:
                     nouvel_auto["transitions"].append([etat, table["alphabet"][i], groupe])
                     break
 
-    # On cherche les groupe où les états finaux se trouvent
+    # On cherche les groupes où les états finaux se trouvent
     for etat_final in auto["F"]:
         for etat in nouvel_auto["etats"]:
             if etat_final in etat and etat not in nouvel_auto["F"]:

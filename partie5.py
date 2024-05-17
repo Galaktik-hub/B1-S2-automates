@@ -28,7 +28,7 @@ def emonde(auto: dict) -> bool:
 @dec.timer
 def prefixe(auto: dict) -> dict:
     """
-    Fonction qui retourne l'automate cceptant l’ensemble des préfixes des mots de l'automate
+    Fonction qui retourne l'automate acceptant l’ensemble des préfixes des mots de l'automate
     """
     assert emonde(auto), "L'automate n'est pas émondé"
     return {
@@ -43,7 +43,7 @@ def prefixe(auto: dict) -> dict:
 @dec.timer
 def suffixe(auto: dict) -> dict:
     """
-    Fonction qui retourne l'automate cceptant l’ensemble des suffixes des mots de l'automate
+    Fonction qui retourne l'automate acceptant l’ensemble des suffixes des mots de l'automate
     """
     assert emonde(auto), "L'automate n'est pas émondé"
     return {
@@ -58,7 +58,7 @@ def suffixe(auto: dict) -> dict:
 @dec.timer
 def facteur(auto: dict) -> dict:
     """
-    Fonction qui retourne l'automate cceptant l’ensemble des facteurs des mots de l'automate
+    Fonction qui retourne l'automate acceptant l’ensemble des facteurs des mots de l'automate
     """
     assert emonde(auto), "L'automate n'est pas émondé"
     return {
@@ -73,7 +73,7 @@ def facteur(auto: dict) -> dict:
 @dec.timer
 def miroir(auto: dict) -> dict:
     """
-    Fonction qui retourne l'automate cceptant l’ensemble des mots miroirs des mots de l'automate
+    Fonction qui retourne l'automate acceptant l’ensemble des mots miroirs de l'automate
     """
     assert emonde(auto), "L'automate n'est pas émondé"
     return {
