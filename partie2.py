@@ -19,8 +19,6 @@ import automates
 
 @dec.timer
 def deterministe(auto: dict) -> bool :
-    if len(auto["I"]) != 1:
-        return False
     for etat in auto["etats"]:
         dejaVu = set()  # Pour les états qui auraient plusieurs transitions avec une même lettre
         for transition in auto["transitions"]: #TODO: A optimiser avec un filter
@@ -34,36 +32,6 @@ def deterministe(auto: dict) -> bool :
 
 @dec.timer
 def determinise(auto: dict) -> dict:
-    if deterministe(auto):
-        return auto
-
-    alphabet = auto["alphabet"]
-    etats = auto["etats"]
-    transitions = auto["transition"]
-    i = auto["I"]
-    f = auto["F"]
-
-    # On initialise la 1er ligne du tableau de transitions avec les étiquettes états et celles de l'alphabet
-    tableTransitions = [{"etats": list()}] + [{lettre: list()} for lettre in alphabet] 
-
-    # On place sur la 1er ligne en première colonne l'ensemble des états de départ
-    tableTransitions["etats"].append(i)
-
-    while True:
-        # Tant qu'au moins une case du tableau n'est pas remplie
-        lenEtats = len(tableTransitions["etats"])
-        for colonne in tableTransitions:
-            if len(colonne) != lenEtats:
-                # Il reste des cases à remplir
-                break
-        else:
-            # Dans le cas où toutes les cases du tableau sont remplies
-            break
-        
-        # On choisit une case à remplir
-
-        # Si aucune ligne n'est associé à cette valeur, commencer une nouvelle ligne étiquetée par cette valeur
-
     return dict()
 
 
