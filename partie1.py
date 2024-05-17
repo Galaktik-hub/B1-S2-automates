@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-'''
+"""
 Projet SAE 2-02: Exploration algorithmique d'un problème
 
 Les décorateurs ont pour but de tester les fonctions définies dans cette partie avec un aperçu des performances.
@@ -7,12 +7,13 @@ Les décorateurs ont pour but de tester les fonctions définies dans cette parti
 Partie 1: Mots, langages et automates...
 
 TELLE Alexis | BUT INF 1 2023-2024
-'''
+"""
 ##########################################
 #           IMPORTING SECTION            #
 ##########################################
 
 import decorators as dec
+
 
 ##########################################
 
@@ -33,10 +34,11 @@ def suf(u: str) -> list[str]:  # 1.1.2
 @dec.timer
 def fact(u: str) -> list[str]:  # 1.1.3
     """Retourne une liste sans doublons de tous les facteurs du mot u."""
-    res: set[str] = {u[i:j] for i in range(len(u)) for j in range(i,
-                                                                  len(u) + 1)}  # Ici, un set est utilisé pour éviter les doublons et ainsi optimiser les performances
-    return sorted(list(
-        res))  # On renvoie la liste triée pour une meilleure lisibilité de la réponse, mais ce n'est pas obligatoire et peut être retiré pour optimiser les performances
+    # Ici, un set est utilisé pour éviter les doublons et ainsi optimiser les performances
+    res: set[str] = {u[i:j] for i in range(len(u)) for j in range(i, len(u) + 1)}
+    # On renvoie la liste triée pour une meilleure lisibilité de la réponse, mais ce n'est pas obligatoire
+    # et peut être retiré pour optimiser les performances
+    return sorted(list(res))
 
 
 @dec.timer
@@ -46,6 +48,7 @@ def miroir(u: str) -> str:  # 1.1.4
 
 
 ################# 1.2 ####################
+
 
 @dec.timer
 def concatene(l1: list[str], l2: list[str]) -> list[str]:  # 1.2.1
@@ -57,11 +60,11 @@ def concatene(l1: list[str], l2: list[str]) -> list[str]:  # 1.2.1
 
 
 @dec.timer
-def puis(l: list[str], n: int) -> list[str]:  # 1.2.2
+def puis(li: list[str], n: int) -> list[str]:  # 1.2.2
     """Retourne une liste de tous les mots du langage l puissance n."""
-    res: set[str] = ['']  # Initialisation de la liste de mots avec le mot vide
+    res: list[str] = ['']  # Initialisation de la liste de mots avec le mot vide
     for _ in range(n):
-        res = [u + v for u in l for v in res]  # On concatène chaque mot de l avec chaque mot de res n fois
+        res = [u + v for u in li for v in res]  # On concatène chaque mot de l avec chaque mot de res n fois
     return res
 
 
@@ -82,16 +85,50 @@ def tousmots(a: list[str], n: int) -> list[str]:  # 1.2.4
 
 ################# 1.3 ####################
 
-@dec.timer
-def defauto(alphabet: list[str], etats: list, transitions: list[list], i: list[int], f: list[int]) -> dict:  # 1.3.1
-    """Retourne un automate sous forme d'un dictionnaire."""
-    return {
-        "alphabet": alphabet,
-        "etats": etats,
-        "transitions": transitions,
-        "I": i,
-        "F": f
+def defauto() -> dict:  # 1.3.1
+    """Lit un automate petit à petit en fonction des inpute de l'utilisateur."""
+    nouvel_auto: dict = {
+        "alphabet": [],
+        "etats:": [],
+        "transitions": [],
+        "I": [],
+        "F": []
     }
+    alphabet = input("Veuillez entrer une à une les lettres de l'alphabet de l'automate. Entrez 'fin' pour "
+                     "terminer la lecture.")
+    while alphabet != 'fin':
+        nouvel_auto["alphabet"].append(alphabet)
+        alphabet = input("Voulez-vous rentrez une autre lettre ? Entrez 'fin' pour terminer la lecture.")
+
+    etat = input("Veuillez entrer un à un les états de l'automate. Entrez 'fin' pour terminer la lecture.")
+    while etat != 'fin':
+        nouvel_auto["etats"].append(int(etat))
+        etat = input("Voulez-vous rentrez un autre état ? Entrez 'fin' pour terminer la lecture.")
+
+    transition = input("Veuillez entrer une à une les transitions de l'automate sous la forme 'etat1 lettre etat2'."
+                       " Entrez 'fin' pour terminer la lecture.")
+    while transition != 'fin':
+        transition = transition.split(" ")
+        if transition[0] in nouvel_auto["etats"] and transition[1] in nouvel_auto["alphabet"] and transition[2] in \
+                nouvel_auto["etats"]:
+            nouvel_auto["transitions"].append([int(transition[0]), transition[1], int(transition[2])])
+            transition = input("Voulez-vous rentrez une autre transition ? Entrez 'fin' pour terminer la lecture.")
+        else:
+            print("La transition entrée n'est pas valide.")
+            transition = input("Veuillez entrer une autre transition. Entrez 'fin' pour terminer la lecture.")
+
+    etat_init = input("Veuillez entrer un à un les états initiaux de l'automate. Entrez 'fin' "
+                      "pour terminer la lecture.")
+    while etat_init != 'fin':
+        nouvel_auto["I"].append(int(etat_init))
+        etat_init = input("Voulez-vous rentrez un autre état initial ? Entrez 'fin' pour terminer la lecture.")
+
+    etat_final = input("Veuillez entrer un à un les états finaux de l'automate. Entrez 'fin' pour terminer la lecture.")
+    while etat_final != 'fin':
+        nouvel_auto["F"].append(int(etat_final))
+        etat_final = input("Voulez-vous rentrez un autre état final ? Entrez 'fin' pour terminer la lecture.")
+
+    return nouvel_auto
 
 
 @dec.timer
@@ -129,7 +166,7 @@ def accepte(automate: dict, m: str) -> bool:  # 1.3.4
 @dec.timer
 def langage_accepte(automate: dict, n: int) -> list[str]:  # 1.3.5
     """Renvoie la liste des mots de longueur inférieure à n acceptés par l'automate."""
-    res: set[str] = tousmots(automate["alphabet"], n)  # On récupère tous les mots de longueur inférieure à n
+    res: list[str] = tousmots(automate["alphabet"], n)  # On récupère tous les mots de longueur inférieure à n
     for m in res:  # On itére sur chaque mot trouvé pour savoir si il est accepté ou non par l'automate
         if not accepte(automate, m):
             res.remove(m)  # On supprime les mots non acceptés par l'automate
@@ -137,7 +174,8 @@ def langage_accepte(automate: dict, n: int) -> list[str]:  # 1.3.5
 
 
 # 1.3.6
-# Il est impossible d'implémenter une fonction qui renvoie le langage accepté par un automate car un automate peut potentiellement 
+# Il est impossible d'implémenter une fonction qui renvoie le langage accepté par un automate car un automate
+# peut potentiellement
 # accepter une infinité de mots et que, pour la même raison que pour l'étoile d'un langage, les ressources sont limitées
 
 
@@ -157,7 +195,14 @@ def main() -> None:  # Cellule de test
         tousmots(['a', 'b'], 3)
 
     def part3() -> None:
-        auto1 = defauto(['a', 'b'], [1, 2, 3, 4], [[1, 'a', 2], [2, 'a', 2], [2, 'b', 3], [3, 'a', 4]], [1], [4])
+        auto1 = {
+            "alphabet": ['a', 'b'],
+            "etats": [1, 2, 3, 4],
+            "transitions": [[1, 'a', 2], [2, 'a', 2], [2, 'b', 3], [3, 'a', 4]],
+            "I": [1],
+            "F": [4]
+        }
+        defauto()
         lirelettre(auto1["transitions"], auto1["etats"], 'a')
         liremot(auto1["transitions"], auto1["etats"], 'aba')
         accepte(auto1, 'aba')

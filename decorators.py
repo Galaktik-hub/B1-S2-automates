@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-'''
+"""
 Bunch of useful decorators made by Alexis TELLE
-'''
+"""
 ##########################################
 #           IMPORTING SECTION            #
 ##########################################
