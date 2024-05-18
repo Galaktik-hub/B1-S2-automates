@@ -82,6 +82,11 @@ def voir_auto() -> None:
 def enregistrer_auto() -> None:
     nom = input("Veuillez donner un nom à votre automate: ")
     auto = defauto()
+    _enregistrer_fichier_(nom, auto)
+    print("Votre automate a bien été enregistré.")
+
+
+def _enregistrer_fichier_(nom: str, auto: dict) -> None:
     AUTOMATES.append((nom, auto))
     with open("automates.py", "a") as file:
         file.write(nom + " = {\n")
@@ -91,18 +96,25 @@ def enregistrer_auto() -> None:
         file.write(f"\t\"I\": {auto['I']},\n")
         file.write(f"\t\"F\": {auto['F']}\n")
         file.write("}\n")
-        file.write(f"AUTOMATES.append((\"{nom}\", {nom}))\n")
-    print("Votre automate a bien été enregistré.")
+        file.write(f"AUTOMATES.append((\"{nom}\", {nom}))\n\n")
 
 
 def appliquer_algo() -> None:
     voir_auto()
     nom_auto = input("Veuillez rentrer le nom de l'automate sur lequel appliquer un algorithme: ")
-    while nom_auto not in AUTOMATES[0]:
+    correct = False
+    auto = None
+    while not correct:
+        for i in range(len(AUTOMATES)):
+            if AUTOMATES[i][0] == nom_auto:
+                auto = AUTOMATES[i][1]
+                correct = True
+                break
+
         voir_auto()
         nom_auto = input("L'automate voulu que vous avez choisi est introuvable, veuillez en choisir un parmi ceux "
                          "disponibles ci-dessus: ")
-    auto = AUTOMATES[AUTOMATES[0].index(nom_auto)]
+
     print("1. Savoir si l'automate est déterministe")
     print("2. Déterminiser l'automate")
     print("3. Savoir si l'automate est complet")
@@ -181,13 +193,9 @@ def appliquer_algo() -> None:
             return
 
     if algo != "1" or algo != "3":
-        choix = input("Voulez-vous sauvegarder le résultat obtenu ? (O/N)")
+        choix = input("Voulez-vous sauvegarder le résultat obtenu ? (o/n)")
         if choix:
-            choix = input("Voulez-vous écraser l'automate existant ? (O/N)")
-            if choix:
-                AUTOMATES[AUTOMATES.index(nom_auto)] = nouvel_auto
-            else:
-                AUTOMATES.append((f"{nom_auto}_{futur_name}", nouvel_auto))
+            _enregistrer_fichier_(f"{nom_auto}_{futur_name}", nouvel_auto)
 
 
 def main():
