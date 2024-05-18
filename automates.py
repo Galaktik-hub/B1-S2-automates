@@ -25,10 +25,10 @@ AUTOMATES.append(("td2exo3autoi", td2exo3autoi))
 ####################################################
 
 test = {
-	"alphabet": ['a', 'b'],
-	"etats": [0, 1],
-	"transitions": [[0, 'a', 1], [1, 'a', 1], [1, 'b', 1]],
-	"I": [0],
-	"F": [1]
+    "alphabet": ['a', 'b'],
+    "etats": [0, 1],
+    "transitions": [[0, 'a', 1], [1, 'a', 1], [1, 'b', 1]],
+    "I": [0],
+    "F": [1]
 }
 AUTOMATES.append(("test", test))

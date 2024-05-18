@@ -12,17 +12,15 @@ TELLE Alexis | BUT INF 1 2023-2024
 #           IMPORTING SECTION            #
 ##########################################
 
-import decorators as dec
-from partie2 import determinise, renommage
+from algo.partie2 import determinise, renommage
 
 ##########################################
 
 
-@dec.timer
 def complet(auto: dict) -> bool:
     for etat in auto["etats"]:
         deja_vu = set()
-        for transition in auto["transitions"]:  #TODO: A optimiser avec un filter
+        for transition in auto["transitions"]:
             if transition[0] == etat:
                 deja_vu.add(transition[1])
         if len(deja_vu) != len(auto["alphabet"]):
@@ -30,7 +28,6 @@ def complet(auto: dict) -> bool:
     return True
 
 
-@dec.timer
 def complete(auto: dict) -> dict:
     if complet(auto):
         return auto
@@ -60,7 +57,6 @@ def complete(auto: dict) -> dict:
     return nouvel_auto
 
 
-@dec.timer
 def complement(auto: dict) -> dict:
     nouvel_auto = determinise(auto)
     nouvel_auto = renommage(auto)

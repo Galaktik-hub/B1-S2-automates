@@ -12,14 +12,12 @@ TELLE Alexis | BUT INF 1 2023-2024
 #           IMPORTING SECTION            #
 ##########################################
 
-import decorators as dec
-from partie2 import deterministe, renommage
-from partie3 import complet
+from algo.partie2 import deterministe, renommage
+from algo.partie3 import complet
 
 ##########################################
 
 
-@dec.timer
 def minimise(auto: dict) -> dict:
     """
     Fonction qui implémente l'algorithme de minimisation de Moore. Un automate déterministe et complet est nécessaire.

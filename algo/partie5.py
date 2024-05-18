@@ -12,7 +12,6 @@ TELLE Alexis | BUT INF 1 2023-2024
 #           IMPORTING SECTION            #
 ##########################################
 
-import decorators as dec
 
 ##########################################
 
@@ -25,7 +24,6 @@ def emonde(auto: dict) -> bool:
     return True
 
 
-@dec.timer
 def prefixe(auto: dict) -> dict:
     """
     Fonction qui retourne l'automate acceptant l’ensemble des préfixes des mots de l'automate
@@ -40,7 +38,6 @@ def prefixe(auto: dict) -> dict:
     }
 
 
-@dec.timer
 def suffixe(auto: dict) -> dict:
     """
     Fonction qui retourne l'automate acceptant l’ensemble des suffixes des mots de l'automate
@@ -55,7 +52,6 @@ def suffixe(auto: dict) -> dict:
     }
 
 
-@dec.timer
 def facteur(auto: dict) -> dict:
     """
     Fonction qui retourne l'automate acceptant l’ensemble des facteurs des mots de l'automate
@@ -70,7 +66,6 @@ def facteur(auto: dict) -> dict:
     }
 
 
-@dec.timer
 def miroir(auto: dict) -> dict:
     """
     Fonction qui retourne l'automate acceptant l’ensemble des mots miroirs de l'automate

@@ -12,26 +12,21 @@ TELLE Alexis | BUT INF 1 2023-2024
 #           IMPORTING SECTION            #
 ##########################################
 
-import decorators as dec
-
 
 ##########################################
 
 ################# 1.1 ####################
 
-@dec.timer
 def pref(u: str) -> list[str]:  # 1.1.1
     """Retourne une liste de tous les préfixes du mot u."""
     return [u[:i] for i in range(len(u) + 1)]  # Utilisation de la création de liste par compréhension et des slices
 
 
-@dec.timer
 def suf(u: str) -> list[str]:  # 1.1.2
     """Retourne une liste de tous les suffixes du mot u."""
     return [u[i:] for i in range(len(u) + 1)]  # Utilisation de la création de liste par compréhension et des slices
 
 
-@dec.timer
 def fact(u: str) -> list[str]:  # 1.1.3
     """Retourne une liste sans doublons de tous les facteurs du mot u."""
     # Ici, un set est utilisé pour éviter les doublons et ainsi optimiser les performances
@@ -41,7 +36,6 @@ def fact(u: str) -> list[str]:  # 1.1.3
     return sorted(list(res))
 
 
-@dec.timer
 def miroir(u: str) -> str:  # 1.1.4
     """Retourne le mot miroir de u."""
     return u[::-1]  # Simple utilisation des slices pour effectuer le miroir du mot
@@ -50,7 +44,6 @@ def miroir(u: str) -> str:  # 1.1.4
 ################# 1.2 ####################
 
 
-@dec.timer
 def concatene(l1: list[str], l2: list[str]) -> list[str]:  # 1.2.1
     """Retourne une liste de tous les mots obtenus en copncaténant les mots de l1 avec les mots de l2."""
     res: set[str] = {f'{u}{v}' for u in l1 for v in
@@ -59,7 +52,6 @@ def concatene(l1: list[str], l2: list[str]) -> list[str]:  # 1.2.1
         res))  # On renvoie la liste triée pour une meilleure lisibilité de la réponse, mais ce n'est pas obligatoire et peut être retiré pour optimiser les performances
 
 
-@dec.timer
 def puis(li: list[str], n: int) -> list[str]:  # 1.2.2
     """Retourne une liste de tous les mots du langage l puissance n."""
     res: list[str] = ['']  # Initialisation de la liste de mots avec le mot vide
@@ -68,12 +60,11 @@ def puis(li: list[str], n: int) -> list[str]:  # 1.2.2
     return res
 
 
-# 1.2.3
-# Il n'est pas possible d'implémenter la fonction permettant de calculer l'étoile d'un langage pour la simple et 
-#bonne raison que l'étoile d'un langage est possiblement infinie et que (pour le moment, peut-être) les technologies ont des ressources limitées
+# 1.2.3 Il n'est pas possible d'implémenter la fonction permettant de calculer l'étoile d'un langage pour la simple
+# et bonne raison que l'étoile d'un langage est possiblement infinie et que (pour le moment, peut-être) les
+# technologies ont des ressources limitées
 
 
-@dec.timer
 def tousmots(a: list[str], n: int) -> list[str]:  # 1.2.4
     """Retourne une liste de tous les mots du langage a* de longueur inférieure n."""
     res: list[str] = list()
@@ -84,6 +75,7 @@ def tousmots(a: list[str], n: int) -> list[str]:  # 1.2.4
 
 
 ################# 1.3 ####################
+
 
 def defauto() -> dict:  # 1.3.1
     """Lit un automate petit à petit en fonction des inpute de l'utilisateur."""
@@ -132,7 +124,6 @@ def defauto() -> dict:  # 1.3.1
     return nouvel_auto
 
 
-@dec.timer
 def lirelettre(t: list[list], e: list[int], a: str) -> list[int]:  # 1.3.2
     """Retourne la liste des états dans lesquels on peut arriver en partant d'un état de E et en lisant la lettre a."""
     res: set[int] = set()
@@ -142,7 +133,6 @@ def lirelettre(t: list[list], e: list[int], a: str) -> list[int]:  # 1.3.2
     return list(res)
 
 
-@dec.timer
 def liremot(t: list[list], e: list[int], m: str) -> list[int]:  # 1.3.3
     """Renvoie la liste des états dans lesquels on peut arriver en partant d'un état de E et en lisant le mot m."""
     if len(m) == 0:  # Si le mot est vide, on renvoie la liste de tous les états de E
@@ -158,13 +148,11 @@ def liremot(t: list[list], e: list[int], m: str) -> list[int]:  # 1.3.3
     return list(res)
 
 
-@dec.timer
 def accepte(automate: dict, m: str) -> bool:  # 1.3.4
     """Renvoie True si le mot m est accepté par l'automate, False sinon."""
     return len(liremot(automate["transitions"], automate["etats"], m)) > 0
 
 
-@dec.timer
 def langage_accepte(automate: dict, n: int) -> list[str]:  # 1.3.5
     """Renvoie la liste des mots de longueur inférieure à n acceptés par l'automate."""
     res: list[str] = tousmots(automate["alphabet"], n)  # On récupère tous les mots de longueur inférieure à n

@@ -8,19 +8,19 @@ Code principal
 
 TELLE Alexis | BUT INF 1 2023-2024
 """
-from subprocess import call
 
 ##########################################
 #           IMPORTING SECTION            #
 ##########################################
 
-from partie1 import defauto
-from partie2 import deterministe, determinise
-from partie3 import complet, complete, complement
-from partie4 import intersection, difference
-from partie5 import prefixe, suffixe, facteur, miroir
-from partie6 import minimise
+from algo.partie1 import defauto
+from algo.partie2 import deterministe, determinise
+from algo.partie3 import complet, complete, complement
+from algo.partie4 import intersection, difference
+from algo.partie5 import prefixe, suffixe, facteur, miroir
+from algo.partie6 import minimise
 from automates import AUTOMATES
+from subprocess import call
 
 ##########################################
 
@@ -30,7 +30,7 @@ def auto_to_dot(auto: dict, name: str):
     Converti le graphe en un fichier au format DOT, format permettant la représentation de graphes sous forme de texte.
     """
     try:
-        with open(name + ".dot", "x") as file:
+        with open("automates_dot/" + name + ".dot", "x") as file:
             # On commence par définir le graphe, avec une lecture de gauche à droite (LR)
             file.write("digraph " + name + "{\n")
             file.write("\trankdir=LR;\n\n")
@@ -69,8 +69,13 @@ def dot_to_png(file, name: str = "automate") -> None:
     """
     Converti un fichier au format DOT sous forme d'une image au format png
     """
-    call(("dot -Tpng " + file + " -o " + name).split(" "))
-    print("Conversion en png effectuée.")
+    print("ATTENTION")
+    print("Pour que la conversion en png fonctionne, vous devez avoir installé Graphviz sur votre machine.")
+    print("Vous devez également être sur un système d'exploitation Linux.")
+    choix = input("Voulez-vous continuer ? (o/n) ")
+    if choix == "o":
+        call(("dot -Tpng " + file + " -o " + name).split(" "))
+        print("Conversion en png effectuée.")
 
 
 def voir_auto() -> None:
@@ -206,7 +211,8 @@ def main():
         print("1. Voir mes automates")
         print("2. Enregistrer mon automate")
         print("3. Appliquer un algorithme sur un automate")
-        print("4. Convertir un automate en .png")
+        print("4. Convertir un automate en .dot")
+        print("5. Convertir un fichier .dot en .png")
         print("9. Quitter le programme")
         print("#" * 20)
         option = input("Veuillez sélectionner une option: ")
@@ -231,6 +237,11 @@ def main():
                 nom_fichier = auto_to_dot(auto[1], auto[0])
                 print("La conversion en format DOT a été effectué, conversion en png en cours...")
                 dot_to_png(nom_fichier)
+            case "5":
+                file = input("Veuillez rentrer le nom du fichier .dot, se trouvant dans le dossier automates_dot, "
+                             "à convertir: ")
+                name = input("Veuillez rentrer le nom de l'image .png à créer: ")
+                dot_to_png(file, name)
             case "9":
                 break
             case _:
