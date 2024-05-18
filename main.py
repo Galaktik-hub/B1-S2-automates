@@ -47,10 +47,10 @@ def auto_to_dot(auto: dict, name: str):
                 else:
                     file.write(f"\tnode [shape = circle]; Q{etat}[label={etat}];\n")
 
-            file.write("\n\t// Transitions\n\n\tEtats initiaux\n")
+            file.write("\n\t// Transitions\n\n\t// Etats initiaux\n")
             # On fait la liaison entre les états initiaux et leurs points de départ
             for i in auto["I"]:
-                file.write(f"\t__Qi{i} -> Q{i}\n")
+                file.write(f"\t__Qi{i}__ -> Q{i}\n")
 
             # On écrit toutes les transitions
             for transition in auto["transitions"]:

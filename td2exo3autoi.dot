@@ -13,8 +13,8 @@ digraph td2exo3autoi{
 	// Transitions
 
 	Etats initiaux
-	__Qi1 -> Q1
-	__Qi5 -> Q5
+	__Qi1__ -> Q1
+	__Qi5__ -> Q5
 	Q1 -> Q2 [label=b];
 	Q1 -> Q4 [label=b];
 	Q2 -> Q3 [label=a];
