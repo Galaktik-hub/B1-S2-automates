@@ -14,73 +14,66 @@ from subprocess import call
 #           IMPORTING SECTION            #
 ##########################################
 
-import decorators as dec
 from partie1 import defauto
 from partie2 import deterministe, determinise
 from partie3 import complet, complete, complement
 from partie4 import intersection, difference
 from partie5 import prefixe, suffixe, facteur, miroir
 from partie6 import minimise
-
+from automates import AUTOMATES
 
 ##########################################
 
 
-def to_dot(dfa, name="Graph"):
-    """ Returns a string corresponding to the specified DFA in DOT format.
-        @param dfa  the DFA to be converted in DOT format.
-        @param name the name of the automaton for the DOT file ("Graph")
-            by default.
-        @returns the automaton in DOT format."""
-    ret = "digraph " + name + " {\n    rankdir=\"LR\";\n\n"
-    ret += "    // States (" + str(len(dfa.states)) + ")\n"
+def auto_to_dot(auto: dict, name: str):
+    """
+    Converti le graphe en un fichier au format DOT, format permettant la représentation de graphes sous forme de texte.
+    """
+    try:
+        with open(name + ".dot", "x") as file:
+            # On commence par définir le graphe, avec une lecture de gauche à droite (LR)
+            file.write("digraph " + name + "{\n")
+            file.write("\trankdir=LR;\n\n")
+            file.write(f"\t// States {len(auto['etats'])}\n")
 
-    state_name = lambda s: "Q_" + str(dfa.states.index(s))
+            # On définit le nombre d'états initiaux
+            for i in auto["I"]:
+                file.write(f"\tnode [shape = point]; __Qi{i}__; // Etat initial \n")
 
-    # States
-    ret += "    node [shape = point ];     __Qi__ // Initial state\n"  # Initial state
-    for state in dfa.states:
-        ret += "    "
-        if state in dfa.finals:
-            ret += "node [shape=doublecircle]; "
-        else:
-            ret += "node [shape=circle];       "
-        ret += state_name(state) + " [label=" + state + "];\n"
+            # On définit les états et les états finaux
+            for etat in auto["etats"]:
+                if etat in auto["F"]:
+                    file.write(f"\tnode [shape = doublecircle]; Q{etat}[label={etat}];\n")
+                else:
+                    file.write(f"\tnode [shape = circle]; Q{etat}[label={etat}];\n")
 
-    # Transitions
-    ret += "\n    // Transitions\n"
-    ret += "    __Qi__ -> " + state_name(dfa.init) + "; // Initial state arrow\n"
-    for state in dfa.states:
-        for (symbol, dst_state) in dfa.transitions[state]:
-            ret += "    " + state_name(state) + " -> " + state_name(dst_state) + " [label=" + symbol + "];\n"
-    return ret + "}\n"
+            file.write("\n\t// Transitions\n\n\tEtats initiaux\n")
+            # On fait la liaison entre les états initiaux et leurs points de départ
+            for i in auto["I"]:
+                file.write(f"\t__Qi{i} -> Q{i}\n")
 
+            # On écrit toutes les transitions
+            for transition in auto["transitions"]:
+                file.write(f"\tQ{transition[0]} -> Q{transition[2]} [label={transition[1]}];\n")
 
-def to_png(dfa, filename=None, name="Graph"):
-    """ Create the PNG image corresponding to the representation of the
-        specified DFA in a file.
-        The automaton is converted in DOT format and the command dot is called
-        in order to generate the PNG.
-        @param dfa      the DFA to be converted in PNG.
-        @param name     the name of the graph.
-        @param filename the name of the PNG file, use the name of the graph if
-            not specified. """
+            file.write("}")
 
-    if filename is None:
-        filename = name + ".png"
+            return file.name()
 
-    tmp_file = filename + ".tmp"
-    with open(tmp_file, "w") as file:
-        file.write(to_dot(dfa, name))
-
-    call(("dot -Tpng " + tmp_file + " -o " + filename).split(" "))
-    call(("rm " + tmp_file).split(" "))
+    except FileExistsError:
+        print("Le fichier existe déjà.")
+        return name + ".dot"
 
 
-def voir_auto(automates: list) -> None:
-    if len(automates) == 0:
-        print("Vous n'avez aucun automate d'enregistré.")
-    for nom, auto in automates:
+def dot_to_png(file, name: str = "automate") -> None:
+    """
+    Converti un fichier au format DOT sous forme d'une image au format png
+    """
+    call(("dot -Tpng " + file + " -o " + name).split(" "))
+    print("Conversion en png effectuée.")
+
+def voir_auto() -> None:
+    for nom, auto in AUTOMATES:
         print(f"{nom}: {auto}")
 
 
@@ -90,14 +83,14 @@ def enregistrer_auto() -> tuple:
     return nom, auto
 
 
-def appliquer_algo(automates: list) -> None:
-    voir_auto(automates)
+def appliquer_algo() -> None:
+    voir_auto()
     nom_auto = input("Veuillez rentrer le nom de l'automate sur lequel appliquer un algorithme: ")
-    while nom_auto not in automates:
-        voir_auto(automates)
+    while nom_auto not in AUTOMATES[0]:
+        voir_auto()
         nom_auto = input("L'automate voulu que vous avez choisi est introuvable, veuillez en choisir un parmi ceux "
                          "disponibles ci-dessus")
-    auto = automates[automates.index(nom_auto)]
+    auto = AUTOMATES[AUTOMATES[0].index(nom_auto)]
     algo = input(f"{nom_auto} a bien été choisi. Faites un choix d'algorithme à appliquer :")
     print("1. Savoir si l'automate est déterministe")
     print("2. Déterminiser l'automate")
@@ -135,16 +128,16 @@ def appliquer_algo(automates: list) -> None:
             futur_name = "complement"
             print(f"L'automate complémenté est {nouvel_auto}")
         case "6":
-            voir_auto(automates)
+            voir_auto()
             nom_auto2 = input("Veuillez rentrer le nom de l'automate avec lequel vous voulez faire l'intersection: ")
-            auto2 = automates[automates.index(nom_auto2)]
+            auto2 = AUTOMATES[AUTOMATES.index(nom_auto2)]
             nouvel_auto = intersection(auto, auto2)
             futur_name = "intersection"
             print(f"L'intersection des deux automates est {nouvel_auto}")
         case "7":
-            voir_auto(automates)
+            voir_auto()
             nom_auto2 = input("Veuillez rentrer le nom de l'automate avec lequel vous voulez faire la différence: ")
-            auto2 = automates[automates.index(nom_auto2)]
+            auto2 = AUTOMATES[AUTOMATES.index(nom_auto2)]
             nouvel_auto = difference(auto, auto2)
             futur_name = "difference"
             print(f"La différence des deux automates est {nouvel_auto}")
@@ -180,17 +173,12 @@ def appliquer_algo(automates: list) -> None:
         if choix:
             choix = input("Voulez-vous écraser l'automate existant ? (O/N)")
             if choix:
-                automates[automates.index(nom_auto)] = nouvel_auto
+                AUTOMATES[AUTOMATES.index(nom_auto)] = nouvel_auto
             else:
-                automates.append((f"{nom_auto}_{futur_name}", nouvel_auto))
-
-
-def convertir_auto(automates: list):
-    return
+                AUTOMATES.append((f"{nom_auto}_{futur_name}", nouvel_auto))
 
 
 def main():
-    automates_enregistres: list[tuple] = list()
     while True:
         print("#" * 20)
         print("Menu des automates")
@@ -205,14 +193,24 @@ def main():
         print("#" * 20)
         match option:
             case "1":
-                voir_auto(automates_enregistres)
+                voir_auto()
             case "2":
                 nom, auto = enregistrer_auto()
-                automates_enregistres.append((nom, auto))
             case "3":
-                appliquer_algo(automates_enregistres)
+                appliquer_algo()
             case "4":
-                convertir_auto(automates_enregistres)
+                voir_auto()
+                nom_auto = input("Veuillez rentrer le nom de l'automate sur lequel appliquer un algorithme: ")
+                while nom_auto not in AUTOMATES[0]:
+                    voir_auto()
+                    nom_auto = input(
+                        "L'automate voulu que vous avez choisi est introuvable, veuillez en choisir un parmi ceux "
+                        "disponibles ci-dessus")
+                auto = AUTOMATES[AUTOMATES[0].index(nom_auto)]
+                print(f"{nom_auto} a bien été choisi. Conversion en cours...")
+                nom_fichier = auto_to_dot(auto[1], auto[0])
+                print("La conversion en format DOT a été effectué, conversion en png en cours...")
+                dot_to_png(nom_fichier)
             case "9":
                 break
             case _:

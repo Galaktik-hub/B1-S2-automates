@@ -1,0 +1,28 @@
+digraph td2exo3autoi{
+	rankdir=LR;
+
+// States 5
+	node [shape = point]; __Qi1__; // Etat initial 
+	node [shape = point]; __Qi5__; // Etat initial 
+	node [shape = circle]; Q1[label=1];
+	node [shape = circle]; Q2[label=2];
+	node [shape = circle]; Q3[label=3];
+	node [shape = doublecircle]; Q4[label=4];
+	node [shape = circle]; Q5[label=5];
+
+	// Transitions
+
+	Etats initiaux
+	__Qi1 -> Q1
+	__Qi5 -> Q5
+	Q1 -> Q2 [label=b];
+	Q1 -> Q4 [label=b];
+	Q2 -> Q3 [label=a];
+	Q2 -> Q3 [label=b];
+	Q3 -> Q2 [label=a];
+	Q3 -> Q2 [label=b];
+	Q3 -> Q4 [label=b];
+	Q5 -> Q5 [label=a];
+	Q5 -> Q5 [label=b];
+	Q5 -> Q4 [label=a];
+}
