@@ -72,15 +72,27 @@ def dot_to_png(file, name: str = "automate") -> None:
     call(("dot -Tpng " + file + " -o " + name).split(" "))
     print("Conversion en png effectuée.")
 
+
 def voir_auto() -> None:
+    print("Affichage des automates disponibles:")
     for nom, auto in AUTOMATES:
         print(f"{nom}: {auto}")
 
 
-def enregistrer_auto() -> tuple:
+def enregistrer_auto() -> None:
     nom = input("Veuillez donner un nom à votre automate: ")
     auto = defauto()
-    return nom, auto
+    AUTOMATES.append((nom, auto))
+    with open("automates.py", "a") as file:
+        file.write(nom + " = {\n")
+        file.write(f"\t\"alphabet\": {auto['alphabet']},\n")
+        file.write(f"\t\"etats\": {auto['etats']},\n")
+        file.write(f"\t\"transitions\": {auto['transitions']},\n")
+        file.write(f"\t\"I\": {auto['I']},\n")
+        file.write(f"\t\"F\": {auto['F']}\n")
+        file.write("}\n")
+        file.write(f"AUTOMATES.append((\"{nom}\", {nom}))\n")
+    print("Votre automate a bien été enregistré.")
 
 
 def appliquer_algo() -> None:
@@ -89,9 +101,8 @@ def appliquer_algo() -> None:
     while nom_auto not in AUTOMATES[0]:
         voir_auto()
         nom_auto = input("L'automate voulu que vous avez choisi est introuvable, veuillez en choisir un parmi ceux "
-                         "disponibles ci-dessus")
+                         "disponibles ci-dessus: ")
     auto = AUTOMATES[AUTOMATES[0].index(nom_auto)]
-    algo = input(f"{nom_auto} a bien été choisi. Faites un choix d'algorithme à appliquer :")
     print("1. Savoir si l'automate est déterministe")
     print("2. Déterminiser l'automate")
     print("3. Savoir si l'automate est complet")
@@ -105,6 +116,7 @@ def appliquer_algo() -> None:
     print("11. Obtenir l'automate acceptant l’ensemble des mots miroirs de l'automate")
     print("12. Minimiser l'automate grâce à l'algorithme de Moore")
     print("13. Annuler")
+    algo = input(f"{nom_auto} a bien été choisi. Faites un choix d'algorithme à appliquer : ")
 
     match algo:
         case "1":
@@ -195,7 +207,7 @@ def main():
             case "1":
                 voir_auto()
             case "2":
-                nom, auto = enregistrer_auto()
+                enregistrer_auto()
             case "3":
                 appliquer_algo()
             case "4":

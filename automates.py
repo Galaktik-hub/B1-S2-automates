@@ -5,6 +5,8 @@ Projet SAE 2-02: Exploration algorithmique d'un problème
 Ce fichier est un groupement de plusieurs automates vus en cours
 De plus, il contient les automates enregistrés dans par l'utilisateur
 
+NE RIEN SUPPRIMER AU DESSUS DE LA LIGNE DE SÉPARATION
+
 TELLE Alexis | BUT INF 1 2023-2024
 """
 
@@ -19,3 +21,14 @@ td2exo3autoi = {
     "F": [4]
 }
 AUTOMATES.append(("td2exo3autoi", td2exo3autoi))
+
+####################################################
+
+test = {
+	"alphabet": ['a', 'b'],
+	"etats": [0, 1],
+	"transitions": [[0, 'a', 1], [1, 'a', 1], [1, 'b', 1]],
+	"I": [0],
+	"F": [1]
+}
+AUTOMATES.append(("test", test))
