@@ -15,20 +15,10 @@ TELLE Alexis | BUT INF 1 2023-2024
 
 ##########################################
 
-
-def emonde(auto: dict) -> bool:
-    """
-    Fonction auxiliaire pour vérifier qu'un automate est bien émondé
-    """
-    #TODO: Faire la fonction
-    return True
-
-
 def prefixe(auto: dict) -> dict:
     """
     Fonction qui retourne l'automate acceptant l’ensemble des préfixes des mots de l'automate
     """
-    assert emonde(auto), "L'automate n'est pas émondé"
     return {
         "alphabet": list(auto["alphabet"]),
         "etats": list(auto["etats"]),
@@ -42,7 +32,6 @@ def suffixe(auto: dict) -> dict:
     """
     Fonction qui retourne l'automate acceptant l’ensemble des suffixes des mots de l'automate
     """
-    assert emonde(auto), "L'automate n'est pas émondé"
     return {
         "alphabet": list(auto["alphabet"]),
         "etats": list(auto["etats"]),
@@ -56,7 +45,6 @@ def facteur(auto: dict) -> dict:
     """
     Fonction qui retourne l'automate acceptant l’ensemble des facteurs des mots de l'automate
     """
-    assert emonde(auto), "L'automate n'est pas émondé"
     return {
         "alphabet": list(auto["alphabet"]),
         "etats": list(auto["etats"]),
@@ -70,7 +58,6 @@ def miroir(auto: dict) -> dict:
     """
     Fonction qui retourne l'automate acceptant l’ensemble des mots miroirs de l'automate
     """
-    assert emonde(auto), "L'automate n'est pas émondé"
     return {
         "alphabet": list(auto["alphabet"]),
         "etats": list(auto["etats"]),
