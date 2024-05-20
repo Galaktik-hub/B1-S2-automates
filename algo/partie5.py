@@ -68,7 +68,7 @@ def miroir(auto: dict) -> dict:
 
 
 def main():
-    auto4 = {"alphabet": ['a', 'b'], "etats": [0, 1, 2, ],
+    auto4 = {"alphabet": ['a', 'b'], "etats": [0, 1, 2],
              "transitions": [[0, 'a', 1], [1, 'b', 2], [2, 'b', 2], [2, 'a', 2]], "I": [0], "F": [2]}
 
     prefixe(auto4)
