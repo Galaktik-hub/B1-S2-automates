@@ -8,24 +8,26 @@ Code principal
 
 TELLE Alexis | BUT INF 1 2023-2024
 """
+import os.path
 
 ##########################################
 #           IMPORTING SECTION            #
 ##########################################
 
 from algo.partie1 import defauto
-from algo.partie2 import deterministe, determinise
+from algo.partie2 import deterministe, determinise, renommage
 from algo.partie3 import complet, complete, complement
 from algo.partie4 import intersection, difference
 from algo.partie5 import prefixe, suffixe, facteur, miroir
 from algo.partie6 import minimise
 from automates import AUTOMATES
-from subprocess import call
+from subprocess import run
+from platform import platform
 
 ##########################################
 
 
-def auto_to_dot(auto: dict, name: str):
+def auto_to_dot(auto: dict, name: str) -> None:
     """
     Converti le graphe en un fichier au format DOT, format permettant la représentation de graphes sous forme de texte.
     """
@@ -58,11 +60,10 @@ def auto_to_dot(auto: dict, name: str):
 
             file.write("}")
 
-            return file.name()
+        print(f"Le fichier a bien été enregistré sous le nom {name}.dot")
 
     except FileExistsError:
-        print("Le fichier existe déjà.")
-        return name + ".dot"
+        print(f"Le fichier existe déjà et est enregistré sous le nom {name}.dot")
 
 
 def dot_to_png(file, name: str = "automate") -> None:
@@ -71,11 +72,17 @@ def dot_to_png(file, name: str = "automate") -> None:
     """
     print("ATTENTION")
     print("Pour que la conversion en png fonctionne, vous devez avoir installé Graphviz sur votre machine.")
-    print("Vous devez également être sur un système d'exploitation Linux.")
     choix = input("Voulez-vous continuer ? (o/n) ")
     if choix == "o":
-        call(("dot -Tpng " + file + " -o " + name).split(" "))
-        print("Conversion en png effectuée.")
+        if platform().startswith("Windows"):
+            dot_path = r"C:\Program Files\Graphviz\bin\dot.exe"
+            file_path = os.path.abspath("automates_dot/" + file + ".dot")
+            png_path = os.path.abspath("automates_png/" + name + ".png")
+            run(f"\"{dot_path}\" -Tpng {file_path} -o {png_path}", shell=True)
+            print("Conversion en png effectuée.")
+        else:
+            run(f"dot -Tpng automates_dot/{file}.png -o automates_png/{name}", shell=True)
+            print("Conversion en png effectuée.")
 
 
 def voir_auto() -> None:
@@ -104,7 +111,7 @@ def _enregistrer_fichier_(nom: str, auto: dict) -> None:
         file.write(f"AUTOMATES.append((\"{nom}\", {nom}))\n\n")
 
 
-def appliquer_algo() -> None:
+def choisir_auto() -> tuple:
     voir_auto()
     nom_auto = input("Veuillez rentrer le nom de l'automate sur lequel appliquer un algorithme: ")
     correct = False
@@ -115,10 +122,16 @@ def appliquer_algo() -> None:
                 auto = AUTOMATES[i][1]
                 correct = True
                 break
+        else:
+            voir_auto()
+            nom_auto = input("L'automate voulu que vous avez choisi est introuvable, veuillez en choisir un parmi ceux "
+                             "disponibles ci-dessus: ")
 
-        voir_auto()
-        nom_auto = input("L'automate voulu que vous avez choisi est introuvable, veuillez en choisir un parmi ceux "
-                         "disponibles ci-dessus: ")
+    return nom_auto, auto
+
+
+def appliquer_algo() -> None:
+    nom_auto, auto = choisir_auto()
 
     print("1. Savoir si l'automate est déterministe")
     print("2. Déterminiser l'automate")
@@ -157,18 +170,14 @@ def appliquer_algo() -> None:
             futur_name = "complement"
             print(f"L'automate complémenté est {nouvel_auto}")
         case "6":
-            voir_auto()
-            nom_auto2 = input("Veuillez rentrer le nom de l'automate avec lequel vous voulez faire l'intersection: ")
-            auto2 = AUTOMATES[AUTOMATES.index(nom_auto2)]
+            nom_auto2, auto2 = choisir_auto()
             nouvel_auto = intersection(auto, auto2)
-            futur_name = "intersection"
+            futur_name = "intersection_avec_" + nom_auto2
             print(f"L'intersection des deux automates est {nouvel_auto}")
         case "7":
-            voir_auto()
-            nom_auto2 = input("Veuillez rentrer le nom de l'automate avec lequel vous voulez faire la différence: ")
-            auto2 = AUTOMATES[AUTOMATES.index(nom_auto2)]
+            nom_auto2, auto2 = choisir_auto()
             nouvel_auto = difference(auto, auto2)
-            futur_name = "difference"
+            futur_name = "difference_avec_" + nom_auto2
             print(f"La différence des deux automates est {nouvel_auto}")
         case "8":
             nouvel_auto = prefixe(auto)
@@ -191,16 +200,19 @@ def appliquer_algo() -> None:
             futur_name = "minimaliste"
             print(f"L'automate minimisé est {nouvel_auto}")
         case "13":
-            futur_name = "inconnu"
             return
         case _:
             print("L'option choisie n'existe pas.")
             return
 
-    if algo != "1" or algo != "3":
-        choix = input("Voulez-vous sauvegarder le résultat obtenu ? (o/n)")
-        if choix:
-            _enregistrer_fichier_(f"{nom_auto}_{futur_name}", nouvel_auto)
+    if algo != "1" and algo != "3":
+        choix = input("Voulez-vous sauvegarder le résultat obtenu ? (o/n) ")
+        if choix == "o":
+            choix = input("Voulez-vous renommer les états de l'automate ? (o/n) ")
+            if choix == "o":
+                _enregistrer_fichier_(f"{nom_auto}_{futur_name}", renommage(nouvel_auto))
+            else:
+                _enregistrer_fichier_(f"{nom_auto}_{futur_name}", nouvel_auto)
 
 
 def main():
@@ -225,18 +237,9 @@ def main():
             case "3":
                 appliquer_algo()
             case "4":
-                voir_auto()
-                nom_auto = input("Veuillez rentrer le nom de l'automate sur lequel appliquer un algorithme: ")
-                while nom_auto not in AUTOMATES[0]:
-                    voir_auto()
-                    nom_auto = input(
-                        "L'automate voulu que vous avez choisi est introuvable, veuillez en choisir un parmi ceux "
-                        "disponibles ci-dessus")
-                auto = AUTOMATES[AUTOMATES[0].index(nom_auto)]
+                nom_auto, auto = choisir_auto()
                 print(f"{nom_auto} a bien été choisi. Conversion en cours...")
-                nom_fichier = auto_to_dot(auto[1], auto[0])
-                print("La conversion en format DOT a été effectué, conversion en png en cours...")
-                dot_to_png(nom_fichier)
+                auto_to_dot(auto, nom_auto)
             case "5":
                 file = input("Veuillez rentrer le nom du fichier .dot, se trouvant dans le dossier automates_dot, "
                              "à convertir: ")

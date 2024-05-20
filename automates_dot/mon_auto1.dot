@@ -1,0 +1,16 @@
+digraph mon_auto1{
+	rankdir=LR;
+
+	// States 2
+	node [shape = point]; __Qi0__; // Etat initial 
+	node [shape = circle]; Q0[label=0];
+	node [shape = doublecircle]; Q1[label=1];
+
+	// Transitions
+
+	// Etats initiaux
+	__Qi0__ -> Q0
+	Q0 -> Q1 [label=a];
+	Q1 -> Q1 [label=a];
+	Q1 -> Q1 [label=b];
+}
