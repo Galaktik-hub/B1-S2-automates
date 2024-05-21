@@ -2,13 +2,13 @@
 
 Vous pouvez éxécuter le code à l'aide du fichier main.py où vous trouverez un menu pour vous aider.
 
-Vous pouvez insérer vos propres automates, qui seront sauvegardés dans le fichier automates.py, mais attention à ne jamais supprimer les automates déjà présents.
+Vous pouvez insérer vos propres automates, qui seront sauvegardés dans le fichier automates.py. Vous pouvez le faire à la fois manuellement, et à la fois grâce au menu principal.
 
 # Représentation des automates sous forme de fichier .png
 
 Vous pouvez convertir vos automates, à la fois sous la forme d'un fichier .dot, mais aussi sous la forme d'un fichier .png.
 
-Vous ne pouvez convertire un automate en .dot que si vous avez Graphviz d'installé sur votre machine.
+Vous ne pouvez convertir un automate en .dot que si vous avez Graphviz d'installé sur votre machine.
 
 # Extrait des algorithmes que vous pouvez éxécuter
 

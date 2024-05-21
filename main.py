@@ -81,7 +81,7 @@ def dot_to_png(file, name: str = "automate") -> None:
             run(f"\"{dot_path}\" -Tpng {file_path} -o {png_path}", shell=True)
             print("Conversion en png effectuée.")
         else:
-            run(f"dot -Tpng automates_dot/{file}.png -o automates_png/{name}", shell=True)
+            run(f"dot -Tpng automates_dot/{file}.dot -o automates_png/{name}.png", shell=True)
             print("Conversion en png effectuée.")
 
 
