@@ -8,8 +8,6 @@ Code principal
 
 TELLE Alexis | BUT INF 1 2023-2024
 """
-import os.path
-
 ##########################################
 #           IMPORTING SECTION            #
 ##########################################
@@ -23,6 +21,7 @@ from algo.partie6 import minimise
 from automates import AUTOMATES
 from subprocess import run
 from platform import platform
+import os.path
 
 ##########################################
 
@@ -71,11 +70,12 @@ def dot_to_png(file, name: str = "automate") -> None:
     Converti un fichier au format DOT sous forme d'une image au format png
     """
     print("ATTENTION")
-    print("Pour que la conversion en png fonctionne, vous devez avoir installé Graphviz sur votre machine.")
+    print("Si vous êtes sous Linux, vous avez besoin d'avoir installé Graphviz pour convertir le fichier en png (sudo"
+          " apt install graphviz)")
     choix = input("Voulez-vous continuer ? (o/n) ")
     if choix == "o":
         if platform().startswith("Windows"):
-            dot_path = r"C:\Program Files\Graphviz\bin\dot.exe"
+            dot_path = r"Graphviz\bin\dot.exe"
             file_path = os.path.abspath("automates_dot/" + file + ".dot")
             png_path = os.path.abspath("automates_png/" + name + ".png")
             run(f"\"{dot_path}\" -Tpng {file_path} -o {png_path}", shell=True)
