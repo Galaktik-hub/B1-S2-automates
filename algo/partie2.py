@@ -39,7 +39,7 @@ def determinise(auto: dict) -> dict:
         "alphabet": auto["alphabet"],
         "etats": [],
         "transitions": [],
-        "I": auto["I"],
+        "I": tuple(auto["I"]),
         "F": []
     }
 
