@@ -8,7 +8,7 @@ Vous pouvez insérer vos propres automates, qui seront sauvegardés dans le fich
 
 Vous pouvez convertir vos automates, à la fois sous la forme d'un fichier .dot, mais aussi sous la forme d'un fichier .png.
 
-Pour les personnes sur un système d'exploitation Linux, vous devez avoir Graphviz d'installé sur votre machine afin de faire la conversion de .dot jusqu'à .png.
+Pour les personnes sur un système d'exploitation Linux ou Windows, vous devez avoir Graphviz d'installé sur votre machine afin de faire la conversion de .dot jusqu'à .png.
 
 # Extrait des algorithmes que vous pouvez éxécuter
 
